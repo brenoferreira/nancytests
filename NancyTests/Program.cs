@@ -16,6 +16,6 @@ namespace NancyTests
 			Console.ReadKey();
 
 			nancyHost.Stop();
-		}
+        }
 	}
 }
