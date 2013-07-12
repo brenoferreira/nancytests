@@ -18,6 +18,7 @@ namespace NancyTests
                 ApiKey = "6eeaa59c-f307-4cf9-bfce-2aaeadb98e5a"
             };
             store.EnlistInDistributedTransactions = false;
+            store.JsonRequestFactory.DisableRequestCompression = true;
 
             store.Initialize();
         }
@@ -40,14 +41,16 @@ namespace NancyTests
         public TodoItem GetById(int id){
             using (var session = this.store.OpenSession())
             {
-                return session.Query<TodoItem>().Single(todo => todo.Id == id);
+                return session.Load<TodoItem>(id);
             }
         }
 
         public void Delete(int id){
             using (var session = this.store.OpenSession())
             {
-                session.Delete(this.GetById(id));
+                var item = session.Load<TodoItem>(id);
+                session.Delete(item);
+                session.SaveChanges();
             }
         }
     }

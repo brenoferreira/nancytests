@@ -15,7 +15,10 @@ namespace NancyTests
 
             Get["/todos"] = _ => this.repository.Get();
 
-            Get["/todos/{id}"] = _ => this.repository.GetById(_.id);
+            Get["/todos/{id}"] = _ => { 
+                string id = _.id;
+                return this.repository.GetById(int.Parse(id));
+            };
 
             Post["/todos"] = _ => {
                 var todoItem = this.Bind<TodoItem>();
@@ -32,7 +35,8 @@ namespace NancyTests
             };
 
             Delete["/todos/{id}"] = _ => { 
-                this.repository.Delete(_.id);
+                string id = _.id;
+                this.repository.Delete(int.Parse(id));
 
                 return Nancy.HttpStatusCode.OK;
             };
